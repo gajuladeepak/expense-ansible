@@ -5,6 +5,8 @@
     login_host: mysql.deepakaws.online #login_host is keyword
     mysql_root_password: ExpenseApp@1
   tasks:
+
+  
   - name: disable default nodejs
     ansible.builtin.command: dnf module disable nodejs -y
 
@@ -46,6 +48,12 @@
     ansible.builtin.copy:
       src: backend.service
       dest: /etc/systemd/system/backend.service
+
+  - name: ansible to install pymysql
+    ansible.builtin.pip:
+      name:
+      - PyMySQL
+      executable: pip3.9
 
   - name: import mysql data
     community.mysql.mysql_db:
