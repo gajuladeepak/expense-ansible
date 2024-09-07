@@ -20,7 +20,7 @@
 
   - name: create a app directory
     ansible.builtin.file:
-      path: /app
+      path: / app
       state: directory
 
   - name: download the backend code
@@ -30,5 +30,6 @@
 
   - name: extracting the file
     ansible.builtin.unarchive:
-      src: /tmp/backend.zip
+      src: /tmp/backend.zip #by default ansible thinks this is in ansible server so i need to move it to remote server
       dest: /app
+      remote_src: yes #with this we are saying we have it in remote server no need to move
