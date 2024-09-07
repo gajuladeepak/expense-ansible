@@ -1,6 +1,9 @@
 - name: mysql configuration
   hosts: mysql
   become: yes
+  vars:
+    login_host: mysql.deepakaws.online #login_host is keyword
+    mysql_root_password: ExpenseApp@1
   tasks:
   - name: install MYSQL server
     ansible.builtin.package:
@@ -11,3 +14,13 @@
       name: mysqld
       state: started
       enabled: yes
+  - name: connect mysql server
+    community.mysql.mysql_info:
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+      login_host: "{{ login_host }}"
+    register: mysql_info   #register -keyword
+
+  - name: mysql info
+    ansible.builtin.debug:
+      msg: "{{ mysql_info }}"
