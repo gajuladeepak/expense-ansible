@@ -1,6 +1,9 @@
 - name: configure backend server
   hosts: backend
   become: yes
+  vars:
+    login_host: mysql.deepakaws.online #login_host is keyword
+    mysql_root_password: ExpenseApp@1
   tasks:
   - name: disable default nodejs
     ansible.builtin.command: dnf module disable nodejs -y
@@ -33,3 +36,22 @@
       src: /tmp/backend.zip #by default ansible thinks this is in ansible server so i need to move it to remote server
       dest: /app
       remote_src: yes #with this we are saying we have it in remote server no need to move
+
+  - name: install dependencies
+    ansible.builtin.command: npm install
+    args:
+      chdir: /app #here we are changing the working directory to another directory (/app) to run the command(npm install)
+
+  - name: copy backend service
+    ansible.builtin.copy:
+      src: backend.service
+      dest: /etc/systemd/system/backend.service
+
+  - name: import mysql data
+    community.mysql.mysql_db:
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+      login_host: "{{ login_host }}"
+      target: /app/schema/backend.sql
+      name: all #from module
+      state: dump #from module
