@@ -2,8 +2,8 @@
   hosts: mysql
   become: yes
   vars:
-    username: "root"
-    password: "ExpenseApp@1"
+    login_host: mysql.deepakaws.online
+    password: ExpenseApp@1
   tasks:
   - name: ansible to install pymsql
     ansible.builtin.pip:
@@ -22,7 +22,8 @@
   
   - name: "Get the mysql info"
     community.mysql.mysql_info:
-      login_user: "{{ username }}"
+      login_user: root
+      login_host: "{{ login_host }}"
       login_password: "{{ password }}"
     ignore_errors: true
     register: "mysql_info"
