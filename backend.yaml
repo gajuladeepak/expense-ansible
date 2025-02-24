@@ -9,8 +9,8 @@
 
   - name: install nodejs
     anisble.builtin.package:
-      name: "nodejs"
-      state: "present" 
+      name: nodejs
+      state: present
 
   - name: User Creation
     ansible.builtin.user:
