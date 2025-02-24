@@ -15,7 +15,7 @@
       state: started
       enabled: yes
   
-  -name: "Get the mysql info"
+  - name: "Get the mysql info"
     community.mysql.mysql_info:
       login_user: "{{ username }}"
       login_password: "{{ password }}"
