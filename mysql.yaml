@@ -5,6 +5,11 @@
     username: "root"
     password: "ExpenseApp@1"
   tasks:
+  - name: ansible to install pymsql
+    ansible.builtin.pip:
+      name:
+      - PyMySQL
+      executable: pip3.9
   - name: "install mysql"
     ansible.builtin.package:
       name: mysql-server
