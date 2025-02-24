@@ -1,6 +1,9 @@
 - name: "mysql"
   hosts: mysql
   become: yes
+  vars:
+    username: "root"
+    password: "ExpenseApp@1"
   tasks:
   - name: "install mysql"
     ansible.builtin.package:
@@ -11,4 +14,16 @@
       name: mysqld
       state: started
       enabled: yes
+  
+  -name: "Get the mysql info"
+    community.mysql.mysql_info:
+      login_user: "{{ username }}"
+      login_password: "{{ password }}"
+    ignore_errors: true
+    register: "mysql_info"
+
+  - name: "print the mysql info"
+    ansible.builtin.debug:
+      msg: "{{ mysql_info }}"
+
       
