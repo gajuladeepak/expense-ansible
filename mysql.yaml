@@ -1,37 +1,31 @@
 - name: mysql configuration
-  hosts: mysqlE
+  hosts: local
+  connection: local
   become: yes
-  vars:
-    login_host: mysql.deepakaws.online #login_host is keyword
-    mysql_root_password: ExpenseApp@1
+  vars: 
+    host: mysql.deepakaws.online
+    mysql_password: "Expenseapp@1"
   tasks:
-  - name: ansible to install pymysql
-    ansible.builtin.pip:
-      name:
-      - PyMySQL
-      executable: pip3.9
-  - name: install MYSQL server
+  - name: install mysql server
     ansible.builtin.package:
-      name: mysql-server
+      name: mysql
       state: present
-  - name: Start and Enable MYSQL server
+    
+  - name: start the server
     ansible.builtin.service:
       name: mysqld
       state: started
       enabled: yes
 
-  - name: connect mysql server
+  - name: connect to mysql server
     community.mysql.mysql_info:
       login_user: root
-      login_password: "{{ mysql_root_password }}"
-      login_host: "{{ login_host }}"
-    ignore_errors: true  #keyword
-    register: mysql_info   #register -keyword
+      login_password: "{{ mysql_password }}"
+      login_host: "{{ host }}"
+    register: mysql_info
 
-  - name: mysql info
+  - name: print mysql info
     ansible.builtin.debug:
-      msg: "{{ mysql_info }}"
+      msg: "mysql_info: {{ mysql_info }}"
 
-  - name: setup MYSQL root password
-    ansible.builtin.command: "mysql_secure_installation --set-root-pass {{ mysql_root_password }}"
-    when: mysql_info.failed is true
+  
