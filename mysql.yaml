@@ -5,6 +5,11 @@
     login_host: mysql.deepakaws.online
     mysql_password: "Expenseapp@1"
   tasks:
+  - name: install requried packages
+    ansible.builtin.pip:
+      name:
+      - PyMySQL
+    executable: pip3.9
   - name: install mysql server
     ansible.builtin.package:
       name: mysql-server
